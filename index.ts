@@ -1,25 +1,26 @@
 'use strict';
 
-import { window, TextEditor, Range, Position } from 'vscode';
+import { window, TextEditor, Range, Position, TextLine } from 'vscode';
 
-export default function(text: string, editor?: TextEditor): Thenable<void> {
+export default function(text: string, editor?: TextEditor): Thenable<boolean> {
 	editor = editor || window.activeTextEditor;
 
 	if (!editor) {
-		return Promise.resolve();
+		return Promise.resolve(null);
 	}
 
-	return new Promise<void>(resolve => {
-		editor.edit(builder => {
-			const document = editor.document;
-			const lastLine = document.lineAt(document.lineCount - 2);
+	return editor.edit(builder => {
+		const document = editor.document;
+		let lastLineIndex = document.lineCount - 1;
+		let lastLine: TextLine;
 
-			const start = new Position(0, 0);
-			const end = new Position(document.lineCount - 1, lastLine.text.length);
+		do {
+			lastLine = document.lineAt(lastLineIndex--)
+		} while (lastLine.isEmptyOrWhitespace && lastLineIndex > 0)
 
-			builder.replace(new Range(start, end), text);
+		const start = new Position(0, 0);
+		const end = new Position(document.lineCount - 1, lastLine.text.length);
 
-			resolve();
-		});
+		builder.replace(new Range(start, end), text);
 	});
 }
