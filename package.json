@@ -1,6 +1,6 @@
 {
   "name": "vscode-set-text",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An easy-to-use VS Code `#setText()` method",
   "license": "MIT",
   "repository": "SamVerschueren/vscode-set-text",
@@ -9,15 +9,17 @@
   "author": {
     "name": "Sam Verschueren",
     "email": "sam.verschueren@gmail.com",
-    "url": "github.com/SamVerschueren"
+    "url": "https://github.com/SamVerschueren"
   },
   "engines": {
-    "vscode": "0.10.x"
+    "vscode": ">=0.10.x"
   },
   "scripts": {
     "prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./"
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "vscode-test"
   },
   "files": [
     "index.js",
@@ -30,8 +32,9 @@
     "set",
     "settext"
   ],
-  "dependencies": {},
   "devDependencies": {
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0",
     "typescript": "^1.6.2",
     "vscode": "^0.10.6"
   }
